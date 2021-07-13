@@ -71,15 +71,31 @@ app.post("/register", async (req,res)=>{
 });
 
 app.post("/login", async(req,res)=>{
-	try{
-		const email=req.body.email;
-		const password=req.body.password;
+				try{
+					const email=req.body.email;
+					const password=req.body.password;
 
-		const useremail = await User.findOne({email});
+					const useremail = await User.findOne({email});
 
-		if(useremail.password===password){
-			
-			res.status(201).send("You Are Logged In Kindly Verify Your Email");
+					if(useremail.password===password){
+						const transporter = nodemailer.createTransport({
+			    host: 'smtp.ethereal.email',
+			    port: 587,
+			    auth: {
+				user: '[USERNAME]',
+				pass: '[PASSWORD]'
+			    }
+			});
+
+			// send email
+			await transporter.sendMail({
+			    from: 'from_address@example.com',
+			    to: 'to_address@example.com',
+			    subject: 'Test Email Subject',
+			    text: 'Example Plain Text Message Body'
+			});
+
+		res.status(201).send("You Are Logged In Kindly Verify Your Email");
 
 		}else{
 			res.send("Invalid Login Credentials")
