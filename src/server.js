@@ -82,8 +82,8 @@ app.post("/login", async(req,res)=>{
 			    host: 'smtp.ethereal.email',
 			    port: 587,
 			    auth: {
-				user: '[USERNAME]',
-				pass: '[PASSWORD]'
+				user: config.user,
+				pass: config.password
 			    }
 			});
 
