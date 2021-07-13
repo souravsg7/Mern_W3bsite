@@ -69,6 +69,9 @@ app.post("/register", async (req,res)=>{
 	}
 	
 });
+var otp = Math.random();
+otp = otp * 1000000;
+otp = parseInt(otp);
 
 app.post("/login", async(req,res)=>{
 				try{
@@ -78,24 +81,30 @@ app.post("/login", async(req,res)=>{
 					const useremail = await User.findOne({email});
 
 					if(useremail.password===password){
-						const transporter = nodemailer.createTransport({
-			    host: 'smtp.ethereal.email',
-			    port: 587,
-			    auth: {
-				user: config.user,
-				pass: config.password
-			    }
-			});
+					    const transporter = nodemailer.createTransport({
+					    host: 'smtp.ethereal.email',
+					    port: 587,
+					    auth: {
+						user: config.user,
+						pass: config.password
+					    }
+					});
 
-			// send email
-			await transporter.sendMail({
-			    from: 'from_address@example.com',
-			    to: 'to_address@example.com',
-			    subject: 'Test Email Subject',
-			    text: 'Example Plain Text Message Body'
-			});
+					// send email
+					await transporter.sendMail({
+					    from: 'from_address@example.com',
+					    to: 'to_address@example.com',
+					    subject: 'Test Email Subject',
+					    text: 'Example Plain Text Message Body'
+					});
 
 		res.status(201).send("You Are Logged In Kindly Verify Your Email");
+		if(req.body.otp==otp){
+			res.send("You has been successfully registered");
+		    }
+		    else{
+			res.render('otp',{msg : 'otp is incorrect'});
+		  };
 
 		}else{
 			res.send("Invalid Login Credentials")
