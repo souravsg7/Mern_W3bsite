@@ -92,8 +92,8 @@ app.post("/login", async(req,res)=>{
 
 					// send email
 					await transporter.sendMail({
-					    from: 'from_address@example.com',
-					    to: 'to_address@example.com',
+					    from: config.user,
+					    to: email,
 					    subject: 'Test Email Subject',
 					    text: 'Example Plain Text Message Body'
 					});
